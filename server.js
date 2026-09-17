@@ -6,15 +6,14 @@ const port = 3000;
 
 app.use(express.json());
 
-const alunos = [
-  { id: 1, nome: "Augusto", turma: "2TIB" },
-  { id: 2, nome: "Gustavo", turma: "2TIB" },
-  { id: 3, nome: "Rayssa", turma: "2TIB" },
-  { id: 4, nome: "Amanda", turma: "2TIB" },
-  { id: 5, nome: "Marcos", turma: "2TIB" },
-  { id: 6, nome: "Michelly", turma: "2TIB" },
-  { id: 7, nome: "Maria Fernanda", turma: "2TIB" },
-  { id: 8, nome: "Fellype", turma: "2TIB" }
+const Ponêis = [
+  { id: 1, nome: "Twilight Sparkle", tipo: "Unicórnio/Alicórnio" },
+  { id: 2, nome: "Rarity", tipo: "Unicórnio" },
+  { id: 3, nome: "Rainbondash", tipo: "Pegasus" },
+  { id: 4, nome: "Fluttershy", tipo: "Pegasus" },
+  { id: 5, nome: "Apple Jack", tipo: "Pônei da Terra" },
+  { id: 6, nome: "Pinkie Pie", tipo: "Pônei da Terra" },
+
 ];
 
 function autenticar(req, res, next) {
@@ -23,7 +22,7 @@ function autenticar(req, res, next) {
 
   if (authHeader !== `Bearer ${tokenSecreto}`) {
     return res.status(401).json({
-      erro: "Acesso não autorizado. Token ausente ou inválido"
+      erro: "Acesso não autorizado :-( (Token ausente ou inválido)"
     });
   }
 
@@ -32,86 +31,87 @@ function autenticar(req, res, next) {
 
 app.get("/", (req, res) => {
   res.json({
-    mensagem: "Servidor Express funcionando!",
+    mensagem: "Servidor Express funcionando! :D",
     disciplina: "Desenvolvimento de Websites",
     bimestre: "3º bimestre"
   });
 });
 
-app.get("/alunos", autenticar, (req, res) => {
-  res.json(alunos);
+app.get("Ponêis", autenticar, (req, res) => {
+  res.json Ponêis); //mostra tds os poneis
 });
 
-app.get("/alunos/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.get("Ponêis/:id", (req, res) => {
+  const id = Number(req.params.id); // mostra ponei por id
 
-  const aluno = alunos.find((aluno) => aluno.id === id);
+  const Pônei = Ponêis.find((Pônei) => Pônei.id === id);
 
-  if (!aluno) {
+  if (!Pônei) { //se n tiver id n mostra ponei
     return res.status(404).json({
-      message: "Aluno não encontrado"
+      message: "Desculpe! Não pude achar esse pônei :-("
     });
   }
 
-  res.json(aluno);
+  res.json(Pônei); //dá a resposta em json
 });
 
-app.post("/alunos", autenticar, (req, res) => {
-  const novoAluno = {
-    id: alunos.length + 1,
+app.post("Ponêis", autenticar, (req, res) => { //cria novo ponei
+  const novoPônei = {
+    id: Ponêis.length + 1,
     nome: req.body.nome,
-    turma: req.body.turma
+    tipo: req.body.tipo
   };
 
-  alunos.push(novoAluno);
+ Ponêis.push(novoPônei); //n faço ideia mas tem haver com o acima, faz parte desse processo
 
   res.status(201).json({
-    mensagem: "Aluno cadastrado com sucesso",
-    aluno: novoAluno
+    mensagem: "Novo Pônei adicionado! ^^",
+    Pônei: novoPônei
   });
 });
 
-app.patch("/alunos/:id", autenticar, (req, res) => {
+app.patch(" Ponêis/:id", autenticar, (req, res) => { //edita ponei
   const id = Number(req.params.id);
-  const { nome, turma } = req.body;
+  const { nome, tipo } = req.body;
 
-  const aluno = alunos.find((aluno) => aluno.id === id);
+  const Pônei = Ponêis.find((Pônei) => Pônei.id === id);
 
-  if (!aluno) {
+  if (!Pônei) {
     return res.status(404).json({
-      message: "Aluno não encontrado"
+      message: "Desculpe! Não pude achar esse pônei :-( "
     });
   }
 
   if (nome) {
-    aluno.nome = nome;
+    Pônei.nome = nome;
   }
 
-  if (turma) {
-    aluno.turma = turma;
+  if (tipo) {
+    Pônei.tipo = tipo;
   }
 
-  res.json(aluno);
+  res.json(Pônei);
 });
 
-app.delete("/alunos/:id", autenticar, (req, res) => {
+app.delete(" Ponêis/:id", autenticar, (req, res) => { //deleta ponei por id
   const id = Number(req.params.id);
 
-  const alunoIndex = alunos.findIndex((aluno) => aluno.id === id);
+  const PôneiIndex = Ponêis.findIndex((Pônei) => Pônei.id === id);
 
-  if (alunoIndex === -1) {
+  if (PôneiIndex === -1) {
     return res.status(404).json({
-      message: "Aluno não encontrado"
+      message: "Desculpe! Não pude achar esse pônei :-("
     });
   }
 
-  alunos.splice(alunoIndex, 1);
+ Ponêis.splice(PôneiIndex, 1);
 
   res.json({
-    message: "Aluno removido com sucesso"
+    message: "Pônei removido com sucesso"
   });
 });
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+

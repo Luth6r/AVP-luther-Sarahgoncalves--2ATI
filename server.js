@@ -104,9 +104,9 @@ app.post("/login", async (req, res) => {
   res.json({ mensagem: "Login realizado", token, usuario: usuarioSemSenha(usuario) });
 });
 
-app.get("/poneis", autenticar, (_req, res) => res.json(poneis));
+app.get("/poneis", (_req, res) => res.json(poneis));
 
-app.get("/poneis/:id", autenticar, (req, res) => {
+app.get("/poneis/:id", (req, res) => {
   const ponei = poneis.find((item) => item.id === Number(req.params.id));
   if (!ponei) return res.status(404).json({ erro: "Ponei nao encontrado" });
   res.json(ponei);
@@ -164,11 +164,11 @@ const swaggerSpec = swaggerJsdoc({
         post: { summary: "Realiza login e retorna um JWT", responses: { 200: { description: "Login realizado" } } }
       },
       "/poneis": {
-        get: { summary: "Lista os poneis", security: [{ bearerAuth: [] }], responses: { 200: { description: "Lista retornada" } } },
+        get: { summary: "Lista os poneis", responses: { 200: { description: "Lista retornada" } } },
         post: { summary: "Cadastra um ponei", security: [{ bearerAuth: [] }], responses: { 201: { description: "Ponei cadastrado" } } }
       },
       "/poneis/{id}": {
-        get: { summary: "Consulta um ponei", security: [{ bearerAuth: [] }], responses: { 200: { description: "Ponei retornado" } } },
+        get: { summary: "Consulta um ponei", responses: { 200: { description: "Ponei retornado" } } },
         put: { summary: "Edita um ponei", security: [{ bearerAuth: [] }], responses: { 200: { description: "Ponei editado" } } },
         delete: { summary: "Exclui um ponei", security: [{ bearerAuth: [] }], responses: { 200: { description: "Ponei excluido" } } }
       },

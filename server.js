@@ -75,7 +75,7 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/usuarios", async (req, res) => {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha } = req.body || {};
   if (!nome || !email || !senha) {
     return res.status(400).json({ erro: "nome, email e senha sao obrigatorios" });
   }
@@ -94,7 +94,7 @@ app.post("/usuarios", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { email, senha } = req.body;
+  const { email, senha } = req.body || {};
   const usuario = usuarios.find((item) => item.email === email);
   if (!usuario || !(await bcrypt.compare(senha || "", usuario.senha))) {
     return res.status(401).json({ erro: "Email ou senha invalidos" });

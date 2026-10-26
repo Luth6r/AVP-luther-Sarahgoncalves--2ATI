@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import prisma from ""
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -181,5 +182,16 @@ const swaggerSpec = swaggerJsdoc({
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.listen(port, () => console.log(`Servidor rodando em http://localhost:${port}`));
+try {
+  await prisma.$connect()
+  console.log("Banco de dados conectado ^^") 
+  app.listen(port, () => console.log(`Servidor rodando em http://localhost:${port}`));
+
+} catch (error) {
+console.error("erro ao conectar banco ao banco:", error.message);
+await prima$disconnect();
+process.exitCode = -1;
+
+}
+
 
